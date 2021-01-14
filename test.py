@@ -8,7 +8,7 @@ import dataformat as dataformat
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='configs/test.yaml', help='Path to the config file.')
-parser.add_argument('--output_path', type=str, default='weights', help="outputs path")
+parser.add_argument('--input_path', type=str, default='weights', help="input path")
 parser.add_argument('--resume', action="store_true")
 opts = parser.parse_args()
 
@@ -30,8 +30,8 @@ trainer = Trainer(config)
 generator = dataformat.get_trainer_generator(config['batch_size'], config['input_dims'], config['output_dims'])
 
 model_name = os.path.splitext(os.path.basename(opts.config))[0]
-output_directory = os.path.join(dir_path, opts.output_path, "outputs", model_name)
-trainer.resume(os.path.join(output_directory, 'checkpoints'))
+output_directory = os.path.join(dir_path, opts.input_path, "outputs", model_name)
+trainer.resume(output_directory)
 
 
 if __name__ == '__main__':

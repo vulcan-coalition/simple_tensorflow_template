@@ -13,7 +13,7 @@ import dataformat as dataformat
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='configs/test.yaml', help='Path to the config file.')
 parser.add_argument('--output_path', type=str, default='weights', help="outputs path")
-parser.add_argument('--resume', action="store_true")
+parser.add_argument('--resume', action="store_true", default=False)
 opts = parser.parse_args()
 
 
@@ -22,13 +22,16 @@ def get_config(config):
         return yaml.load(stream)
 
 
-def prepare_sub_folder(output_directory):
-    checkpoint_directory = os.path.join(output_directory, 'checkpoints')
-    shutil.rmtree(checkpoint_directory, ignore_errors=True, onerror=None)
-    if not os.path.exists(checkpoint_directory):
-        print("Creating directory: {}".format(checkpoint_directory))
-        os.makedirs(checkpoint_directory)
-    return checkpoint_directory
+def prepare_directory(output_dir):
+    if not os.path.exists(output_dir):
+        print("Creating directory: {}".format(output_dir))
+        os.makedirs(output_dir)
+    else:
+        print("Clearing directory: {}".format(output_dir))
+        for root, dirs, files in os.walk(output_dir):
+            for file in files:
+                os.remove(os.path.join(root, file))
+    shutil.copy(opts.config, os.path.join(output_dir, 'config.yaml'))  # copy config file to output folder
 
 
 # Load experiment setting
@@ -41,12 +44,14 @@ generator = dataformat.get_trainer_generator(config['batch_size'], config['input
 
 # Setup logger and output folders
 model_name = os.path.splitext(os.path.basename(opts.config))[0]
-output_directory = os.path.join(opts.output_path + "/outputs", model_name)
-checkpoint_directory = prepare_sub_folder(output_directory)
-shutil.copy(opts.config, os.path.join(output_directory, 'config.yaml'))  # copy config file to output folder
+output_directory = os.path.join(opts.output_path, "outputs", model_name)
 
-# Start training
-trainer.resume(checkpoint_directory) if opts.resume else 0
+if opts.resume:
+    trainer.resume(output_directory)
+else:
+    prepare_directory(output_directory)
+
+    # Start training
 max_iter = config['max_iter']
 sum_loss = 0
 sum_count = 0
@@ -72,7 +77,7 @@ for mb in generator:
 
     # Save network weights
     if (iterations + 1) % config['snapshot_save_iter'] == 0:
-        trainer.save(checkpoint_directory)
+        trainer.save(output_directory)
 
     if iterations >= max_iter:
         sys.exit('Finish training')
