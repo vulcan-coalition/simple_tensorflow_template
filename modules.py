@@ -8,7 +8,7 @@ class Linear(tf.keras.Model):
         self.B = tf.Variable(tf.zeros([output_dims]), name='bias')
 
     def call(self, inputs):
-        return tf.matmul(inputs, self.W) + self.B
+        return tf.nn.relu(tf.matmul(inputs, self.W) + self.B)
 
 
 class Multilayer_linear(tf.keras.Model):
@@ -25,7 +25,7 @@ class Multilayer_linear(tf.keras.Model):
         self.model = tf.keras.Sequential(layers)
 
     # need to specify this signature for exporting to tensorflow lite
-    @tf.function(input_signature=[tf.TensorSpec([None, None], tf.float32)])
+    @tf.function
     def call(self, inputs):
         return self.model(inputs)
 

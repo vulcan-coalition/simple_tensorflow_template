@@ -12,8 +12,8 @@ step_size: 1000              # how often to decay learning rate
 weight_decay: 0.5            # how much to decay learning rate
 
 # model options
-layers: [16, 16, 8]
+layers: [16, 8, 4]
 
 # data options
 input_dims: 16
-output_dims: 8
+output_dims: 2
