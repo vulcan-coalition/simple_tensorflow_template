@@ -63,7 +63,7 @@ class Trainer:
         self.checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir))
 
     def save(self, checkpoint_dir):
-        self.checkpoint.save(checkpoint_dir)
+        self.checkpoint.save(os.path.join(checkpoint_dir, "ckpt"))
 
     def get_model(self):
         return self.model
