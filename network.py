@@ -19,7 +19,7 @@ def compute_mse_loss(predictions, targets):
     return tf.reduce_mean(tf.square(predictions - targets))
 
 
-class Model(tf.keras.Model):
+class Model:
 
     def __init__(self, hyperparameters):
         super(Model, self).__init__()
