@@ -26,14 +26,7 @@ class Trainer:
         self.output_dims = hyperparameters['output_dims']
         self.layer_sizes = hyperparameters['layers']
 
-        current_size = self.input_dims
-        layers = []
-        for s in self.layer_sizes:
-            layers.append(Linear(current_size, s))
-            current_size = s
-        layers.append(Linear(current_size, self.output_dims))
-
-        self.model = tf.keras.Sequential(layers)
+        self.model = Multilayer_linear(self.input_dims, self.layer_sizes, self.output_dims)
 
         # Setup the optimizers
         lr = hyperparameters['lr']
