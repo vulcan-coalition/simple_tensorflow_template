@@ -7,7 +7,7 @@ max_iter: 1000             # maximum number of training iterations
 num_minibatch: 32768 
 batch_size: 8                # batch size
 init: xavier                 # initialization [gaussian/kaiming/xavier/orthogonal]
-lr: 0.0001                    # initial learning rate
+lr: 0.001                    # initial learning rate
 step_size: 1000              # how often to decay learning rate
 weight_decay: 0.5            # how much to decay learning rate
 
@@ -16,4 +16,4 @@ layers: [16, 8, 4]
 
 # data options
 input_dims: 16
-output_dims: 2
+output_dims: 1
