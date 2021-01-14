@@ -7,7 +7,7 @@ data_path = os.path.join(dir_path, "data")
 
 def get_trainer_generator(max_batch_size, input_dims, output_dims):
     while True:
-        yield tf.random.normal([max_batch_size, input_dims]), tf.random.normal([max_batch_size, output_dims])
+        yield tf.random.normal([max_batch_size, input_dims]), tf.ones([max_batch_size, output_dims])
 
 
 if __name__ == '__main__':
