@@ -19,11 +19,9 @@ def compute_mse_loss(predictions, targets):
     return tf.reduce_mean(tf.square(predictions - targets))
 
 
-class Model:
+class Trainer:
 
     def __init__(self, hyperparameters):
-        super(Model, self).__init__()
-
         self.input_dims = hyperparameters['input_dims']
         self.output_dims = hyperparameters['output_dims']
         self.layer_sizes = hyperparameters['layers']
@@ -67,6 +65,9 @@ class Model:
     def save(self, checkpoint_dir):
         self.checkpoint.save(checkpoint_dir)
 
+    def get_model(self):
+        return self.model
+
 
 if __name__ == '__main__':
     print("assert that the model works.")
@@ -83,7 +84,7 @@ if __name__ == '__main__':
         "output_dims": 4
     }
 
-    network = Model(params)
+    network = Trainer(params)
 
     x = tf.ones([2, 8])
     y = tf.zeros([2, 4])

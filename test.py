@@ -1,8 +1,7 @@
 import argparse
-from network import Model
+from network import Trainer
 import os
 import yaml
-import numpy as np
 
 import dataformat as dataformat
 # import gen_data as gen_data
@@ -26,19 +25,19 @@ def get_config(config):
 config = get_config(opts.config)
 
 # Setup model and data loader
-model = Model(config)
+trainer = Trainer(config)
 
 generator = dataformat.get_trainer_generator(config['batch_size'], config['input_dims'], config['output_dims'])
 
 model_name = os.path.splitext(os.path.basename(opts.config))[0]
 output_directory = os.path.join(dir_path, opts.output_path, "outputs", model_name)
-model.resume(os.path.join(output_directory, 'checkpoints'))
+trainer.resume(os.path.join(output_directory, 'checkpoints'))
 
 
 if __name__ == '__main__':
 
     for i, mb in enumerate(generator):
-        predictions = model.predict(mb[0])
+        predictions = trainer.predict(mb[0])
         label_tensor = mb[1].numpy()
 
         print(predictions, label_tensor)

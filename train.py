@@ -1,5 +1,5 @@
 import argparse
-from network import Model
+from network import Trainer
 import os
 import sys
 import shutil
@@ -35,7 +35,7 @@ def prepare_sub_folder(output_directory):
 config = get_config(opts.config)
 
 # Setup model and data loader
-trainer = Model(config)
+trainer = Trainer(config)
 
 generator = dataformat.get_trainer_generator(config['batch_size'], config['input_dims'], config['output_dims'])
 
